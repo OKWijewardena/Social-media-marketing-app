@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI for Social Media Marketing</title>
+    <style>
+        /* Add some stylish CSS for the conversation */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .conversation {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .user-message {
+            color: #2196F3;
+        }
+
+        .assistant-message {
+            color: #4CAF50;
+        }
+
+        /* Style the forms and buttons */
+        form {
+            margin: 10px 0;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .download-pdf-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .download-pdf-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI for Social Media Marketing</h1>
+    <div class="container">
+        <!-- Plan Task Form -->
+        <form method="post" action="/plan">
+            <label for="message_plan">Social Media Plan Task: </label>
+            <input type="text" id="message_plan" name="message" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Analytics Task Form -->
+        <form method="post" action="/analytics">
+            <label for="message_caption">Analytics Task: </label>
+            <input type="text" id="message_caption" name="message" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if task_description %}
+        <p>{{ task_description }}</p>
+        {% endif %}
+        
+        {% if conversation %}
+            {% for message in conversation %}
+                <div class="conversation">
+                    {% if message.role == "user" %}
+                        <h2 class="user-message">You:</h2>
+                    {% else %}
+                        <h2 class="assistant-message">AI:</h2>
+                    {% endif %}
+                    <p>{{ message.content | safe }}</p> <!-- The | safe filter allows HTML tags -->
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Download PDF Button -->
+        <form method="post" action="/download_pdf">
+            <input type="hidden" name="conversation" id="conversation_input" value="">
+            <button type="button" class="download-pdf-button" id="download_pdf_button">Download PDF</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to set the conversation content when the download button is clicked
+        document.getElementById("download_pdf_button").addEventListener("click", function () {
+            const conversationContent = document.querySelector(".container").innerHTML;
+            document.getElementById("conversation_input").value = conversationContent;
+            // Submit the form
+            document.querySelector("form[action='/download_pdf']").submit();
+        });
+    </script>
+</body>
+</html>

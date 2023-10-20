@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with AI - All Tasks</title>
+    <style>
+        /* Add some basic CSS styling for the conversation */
+        .conversation {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .user-message {
+            color: blue;
+        }
+
+        .assistant-message {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat with AI - All Tasks</h1>
+    
+    <!-- All Tasks Form -->
+    <form method="post" action="/all_tasks">
+        <label for="message">Enter Your Message: </label>
+        <input type="text" id="message" name="message" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if task_responses %}
+        <h2>Responses:</h2>
+        {% for response in task_responses %}
+            <div class="conversation">
+                <h2 class="assistant-message">AI:</h2>
+                <p>{{ response | safe }}</p> <!-- The | safe filter allows HTML tags -->
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
